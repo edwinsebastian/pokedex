@@ -6,6 +6,9 @@ import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PokedexService {
 
@@ -14,8 +17,14 @@ public class PokedexService {
     @Autowired
     PokeApiClient pokeApiClient;
 
-    NamedApiResourceList getPokemonList(int offset){
-        return pokeApiClient.getPokemonList(offset, QUERY_LIMIT);
+    List<Pokemon> getPokemonList(int offset) {
+        NamedApiResourceList namedApiResourceList = pokeApiClient.getPokemonList(offset, QUERY_LIMIT);
+
+        return namedApiResourceList
+                .getResults()
+                .parallelStream()
+                .map(namedApiResource -> getPokemon(namedApiResource.getId()))
+                .collect(Collectors.toList());
     }
 
     Pokemon getPokemon(int id){
