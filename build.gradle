@@ -25,6 +25,7 @@ ext {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
 //    implementation 'com.vaadin:vaadin-spring-boot-starter'
     implementation 'me.sargunvohra.lib:pokekotlin:2.3.1'
     compileOnly 'org.projectlombok:lombok'

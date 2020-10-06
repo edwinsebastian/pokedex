@@ -1,12 +1,14 @@
 package com.modyo.pokedex.backend.model;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.sargunvohra.lib.pokekotlin.model.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 public class PokemonResponse {
     private int id;
     private String name;
@@ -38,5 +40,18 @@ public class PokemonResponse {
                     return "";
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "PokemonResponse{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", abilities=" + abilities +
+                ", types=" + types +
+                ", image='" + image + '\'' +
+                '}';
     }
 }
