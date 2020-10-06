@@ -1,5 +1,6 @@
 package com.modyo.pokedex.backend;
 
+import com.modyo.pokedex.backend.model.PokemonResponse;
 import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,8 @@ public class PokedexController {
     PokedexService pokedexService;
 
     @GetMapping("/list")
-    List<Pokemon> getPokemonList(@RequestParam Optional<Integer> offset){
-        return pokedexService.getPokemonList(offset.orElse(0));
+    List<PokemonResponse> getPokemonList(@RequestParam Optional<Integer> offset){
+        return pokedexService.getPokemonResponseList(offset.orElse(0));
     }
 
     @GetMapping("/pokemon/{id}")

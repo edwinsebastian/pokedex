@@ -1,5 +1,6 @@
 package com.modyo.pokedex.backend;
 
+import com.modyo.pokedex.backend.model.PokemonResponse;
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient;
 import me.sargunvohra.lib.pokekotlin.model.NamedApiResourceList;
 import me.sargunvohra.lib.pokekotlin.model.Pokemon;
@@ -17,13 +18,14 @@ public class PokedexService {
     @Autowired
     PokeApiClient pokeApiClient;
 
-    List<Pokemon> getPokemonList(int offset) {
+    List<PokemonResponse> getPokemonResponseList(int offset) {
         NamedApiResourceList namedApiResourceList = pokeApiClient.getPokemonList(offset, QUERY_LIMIT);
 
         return namedApiResourceList
                 .getResults()
                 .parallelStream()
                 .map(namedApiResource -> getPokemon(namedApiResource.getId()))
+                .map(PokemonResponse::new)
                 .collect(Collectors.toList());
     }
 
