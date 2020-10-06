@@ -19,9 +19,9 @@ repositories {
     maven { url 'https://dl.bintray.com/sargunv/maven' }
 }
 
-ext {
-    set('vaadinVersion', "14.3.7")
-}
+//ext {
+//    set('vaadinVersion', "14.3.7")
+//}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -37,9 +37,9 @@ dependencies {
 }
 
 dependencyManagement {
-    imports {
-        mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
-    }
+//    imports {
+//        mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+//    }
 }
 
 test {

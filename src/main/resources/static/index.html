@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Pokedex</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body class="container bg-light">
+    <div class="container-fluid" id="app">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-between">
+                <li class="page-item"><a class="page-link">Previous</a></li>
+                <li class="page-item"><a class="page-link">Next</a></li>
+            </ul>
+        </nav>
+        <div class="row">
+            <div class="col-sm-4 card" style="max-width: 540px;" v-for="pokemon in pokemons">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img :src="pokemon.image" class="card-img" alt="...">
+                        <img :src="pokemon.imageShiny" class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ pokemon.name }}</h4>
+                            <div class="dropdown-divider"></div>
+                                <p class="card-text" v-for="ability in pokemon.abilities"> {{ability}} </p>
+                            <p class="card-text">weight: {{pokemon.weight}} hectograms</p>
+                            <p class="card-text">
+                                <small class="text-muted">{{pokemon.types.join("/")}}</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let paging = 0
+        const apiURL = 'http://localhost:8080/v1/pokedex/list';
+        new Vue({
+            el: '#app',
+            data(){
+                return {
+                    pokemons: []
+                }
+            },
+            methods: {
+                requestData(){
+                    let offset = 20*(1);
+                    fetch(apiURL+'?offset='+offset)
+                        .then(response => {
+                            return response.json()
+                        })
+                        .then(pokemons => {
+                            this.pokemons = pokemons;
+                        })
+                }
+            },
+            created(){
+                fetch(apiURL)
+                .then(response => {
+                    return response.json()
+                })
+                .then(pokemons => {
+                    this.pokemons = pokemons;
+                })
+            }
+        });
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
