@@ -1,5 +1,6 @@
-package com.modyo.pokedex.backend;
+package com.modyo.pokedex.backend.controller;
 
+import com.modyo.pokedex.backend.service.PokedexService;
 import com.modyo.pokedex.backend.model.PokemonResponse;
 import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;

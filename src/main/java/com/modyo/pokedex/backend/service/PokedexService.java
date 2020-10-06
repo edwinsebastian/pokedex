@@ -1,10 +1,11 @@
-package com.modyo.pokedex.backend;
+package com.modyo.pokedex.backend.service;
 
 import com.modyo.pokedex.backend.model.PokemonResponse;
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient;
 import me.sargunvohra.lib.pokekotlin.model.NamedApiResourceList;
 import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class PokedexService {
     @Autowired
     PokeApiClient pokeApiClient;
 
-    List<PokemonResponse> getPokemonResponseList(int offset) {
+    @Cacheable("pokemon")
+    public List<PokemonResponse> getPokemonResponseList(int offset) {
         NamedApiResourceList namedApiResourceList = pokeApiClient.getPokemonList(offset, QUERY_LIMIT);
 
         return namedApiResourceList
@@ -29,7 +31,7 @@ public class PokedexService {
                 .collect(Collectors.toList());
     }
 
-    Pokemon getPokemon(int id){
+    public Pokemon getPokemon(int id){
         return pokeApiClient.getPokemon(id);
     }
 }
