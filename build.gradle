@@ -6,7 +6,8 @@ plugins {
 
 group = 'com.modyo'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+//sourceCompatibility = '11'
+sourceCompatibility = '8'
 
 configurations {
     compileOnly {
@@ -19,14 +20,9 @@ repositories {
     maven { url 'https://dl.bintray.com/sargunv/maven' }
 }
 
-//ext {
-//    set('vaadinVersion', "14.3.7")
-//}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
-//    implementation 'com.vaadin:vaadin-spring-boot-starter'
     implementation 'me.sargunvohra.lib:pokekotlin:2.3.1'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -37,9 +33,6 @@ dependencies {
 }
 
 dependencyManagement {
-//    imports {
-//        mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
-//    }
 }
 
 test {
