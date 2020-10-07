@@ -17,6 +17,7 @@ public class PokemonResponse {
     private List<String> abilities;
     private List<String> types;
     private String image;
+    private String imageShiny;
 
     public PokemonResponse(Pokemon pokemon){
         this.id = pokemon.getId();
@@ -26,6 +27,7 @@ public class PokemonResponse {
         this.abilities = getUtilData(pokemon.getAbilities());
         this.types = getUtilData(pokemon.getTypes());
         this.image = pokemon.getSprites().getFrontDefault();
+        this.imageShiny = pokemon.getSprites().getFrontShiny();
     }
 
     private <E> List<String> getUtilData(List<E> eList){
@@ -52,6 +54,7 @@ public class PokemonResponse {
                 ", abilities=" + abilities +
                 ", types=" + types +
                 ", image='" + image + '\'' +
+                ", imageShiny='" + imageShiny + '\'' +
                 '}';
     }
 }

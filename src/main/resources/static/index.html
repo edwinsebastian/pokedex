@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Pokedex</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body class="container bg-light">
+    <div class="container-fluid" id="app">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" v-show="offset>=20"><a class="page-link" @click="requestDataByPage(-1)">20 Previous</a></li>
+                <li v-for="index in 10" :key="index">
+                    <a class="page-link" @click="requestDataByOffset(index*100)">{{index*100}}</a>
+                </li>
+                <li class="page-item" v-show="nextPage"><a class="page-link" @click="requestDataByPage(1)">Next 20</a></li>
+            </ul>
+        </nav>
+        <div class="row">
+            <div class="col-sm-4 card" style="max-width: 540px;" v-for="pokemon in pokemons">
+                <div class="row no-gutters">
+                    <div class="col-md-4" style="margin-block-start: 1em">
+                        <div v-if="pokemon.image">
+                            <img :src="pokemon.image" class="card-img" alt="">
+                            <img :src="pokemon.imageShiny" class="card-img" alt="">
+                        </div>
+                        <div v-else>
+                            <img src="unknown-pokemon.png" class="card-img" alt="" style="width: 60%;margin-block-start: 2em">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title">#{{pokemon.id}} - {{ pokemon.name }}</h4>
+                            <div class="dropdown-divider"></div>
+                            <p class="card-text">
+                                <small class="text-muted">{{pokemon.types.join("/")}}</small>
+                            </p>
+                            <p class="card-text" v-for="ability in pokemon.abilities"> {{ability}} </p>
+                            <div class="dropdown-divider"></div>
+                            <p class="card-text">weight: {{pokemon.weight}} hectograms</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiURL = 'http://localhost:8080/v1/pokedex/list';
+        new Vue({
+            el: '#app',
+            data(){
+                return {
+                    pokemons: [],
+                    offset: 0,
+                    nextPage: true
+                }
+            },
+            methods: {
+                requestDataByPage(page){
+                    this.offset += 20*(page);
+                    this.fetchData()
+                },
+                requestDataByOffset(offset){
+                    this.offset = offset;
+                    this.fetchData()
+                },
+                fetchData(){
+                    fetch(apiURL+'?offset='+this.offset)
+                        .then(response => {
+                            return response.json()
+                        })
+                        .then(pokemons => {
+                            if(pokemons.length < 20)
+                                this.nextPage = false;
+                            this.pokemons = pokemons;
+                        })
+                }
+            },
+            created(){
+                fetch(apiURL)
+                .then(response => {
+                    return response.json()
+                })
+                .then(pokemons => {
+                    this.pokemons = pokemons;
+                })
+            }
+        });
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
